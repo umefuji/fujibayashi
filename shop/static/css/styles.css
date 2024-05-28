@@ -1,0 +1,611 @@
+/* Fonts */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400);
+
+/* fontawesome */
+@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+
+/* Simple Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* body */
+body {
+  background: #ffffff;
+  color: #000000;
+  font: 400 87.5%/1.5em 'Open Sans', sans-serif;
+}
+
+/* Form Layout */
+.form-wrapper {
+  background: #fafafa;
+  margin: 3em auto;
+  padding: 0 1em;
+  max-width: 370px;
+  border: 2px solid #000;
+  /* フォームを黒線で囲む */
+  border-radius: 5px;
+  /* 角を丸くする */
+}
+
+.form-wrapper h2,
+h1 {
+  text-align: center;
+  padding: 1em 0;
+}
+
+form {
+  padding: 0 1.5em;
+  padding-bottom: 15px;
+}
+
+.form-item {
+  margin-bottom: 0.75em;
+  width: 100%;
+}
+
+.form-item input,
+.form-item select,
+.form-item textarea {
+  background: #fafafa;
+  border: none;
+  border-bottom: 2px solid #e9e9e9;
+  color: #666;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  height: 50px;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.form-item input:focus,
+.form-item select:focus,
+.form-item textarea:focus {
+  border-bottom: 2px solid #c0c0c0;
+  outline: none;
+}
+
+.button-panel {
+  margin: 2em 0 0;
+  width: 100%;
+}
+
+.button-panel .button {
+  background: #f16272;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  height: 50px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.3s ease-in-out;
+  width: 100%;
+
+}
+
+.button:hover {
+  background: #ee3e52;
+}
+
+.form-footer {
+  font-size: 1em;
+  padding: 2em 0;
+  text-align: center;
+}
+
+.form-footer a {
+  color: #8c8c8c;
+  text-decoration: none;
+  transition: border-color 0.3s;
+}
+
+.form-footer a:hover {
+  border-bottom: 1px dotted #8c8c8c;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 2px solid #000;
+  margin: 0;
+  /* 上下左右の隙間をなくす */
+}
+
+.navbar .logo {
+  height: 50px;
+}
+
+.navbar nav a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 10px;
+  padding: 5px 10px;
+  border-right: 1px solid #000;
+}
+
+.navbar nav a:last-child {
+  border-right: none;
+}
+
+.navbar nav a:hover {
+  background-color: #eee;
+}
+
+/* Search Section */
+/* フォーム全体を中央へ */
+.form1 {
+  text-align: center;
+  margin: 50px;
+}
+
+.form1 h2 {
+  margin-bottom: 10px;
+}
+
+/* 入力フォームとボタンを横並びにして中央配置 */
+.form1 form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 入力フォーム */
+#sbox1 {
+  width: 250px;
+  padding: 10px 15px;
+  border-radius: 4px 0 0 4px;
+  background: #eee;
+  border: none;
+  outline: 0;
+  font-size: 1em;
+}
+
+/* 検索ボタン */
+#sbtn2 {
+  width: 50px;
+  height: 40px;
+  border-radius: 0 4px 4px 0;
+  background: #5dcee4;
+  /* ボタンの背景色 */
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sbtn2:hover {
+  background: #2d7177;
+  /* ホバー時の背景色 */
+}
+
+#sbtn2 i {
+  font-size: 1.2em;
+  color: #fff;
+  /* アイコンの色 */
+}
+
+/* New Arrivals Section */
+.new-arrivals,
+.top-ranking,
+.tag-cloud {
+  margin-bottom: 40px;
+}
+
+.new-arrivals h2,
+.top-ranking h2,
+.tag-cloud h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.book-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.book-item {
+  flex: 0 1 200px;
+  /* アイテムの基準幅を200pxに設定 */
+  text-align: center;
+}
+
+.book-item img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+  /* 中央揃えと下の余白を設定 */
+}
+.book-detail-img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+@media (min-width: 768px) {
+  .book-detail-img {
+      width: 200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .book-detail-img {
+      width: 300px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .book-detail-img {
+      width: 400px;
+  }
+}
+.book-item p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .book-item {
+    flex: 0 1 150px;
+    /* モバイルデバイス向けに幅を調整 */
+  }
+}
+
+@media (max-width: 480px) {
+  .book-item {
+    flex: 0 1 120px;
+    /* 小さいモバイルデバイス向けに幅を調整 */
+  }
+}
+
+/* Tag Cloud Section */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tags a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: inline-block;
+  transform: rotate(calc(var(--random-angle) * 1deg));
+  opacity: 0.8;
+}
+
+.tags a:hover {
+  color: #000;
+  opacity: 1;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.tags a {
+  animation: float 3s ease-in-out infinite;
+}
+
+#word-cloud {
+  width: 100%;
+  height: 50vh;
+  /* ビューポートの高さに応じてサイズを調整 */
+  position: relative;
+  background-color: #ffffff;
+  /* 背景色を白に設定 */
+  margin-bottom: 0;
+  /* 下の余白を0に設定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  #word-cloud {
+    height: 60vh;
+    /* モバイルデバイス向けに高さを調整 */
+  }
+}
+
+@media (max-width: 480px) {
+  #word-cloud {
+    height: 70vh;
+    /* 小さいモバイルデバイス向けに高さを調整 */
+  }
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+}
+
+
+/*==================================================
+subvisualスライダーのためのcss
+===================================*/
+.slider {
+  position: relative;
+  z-index: 1;
+  /*↑z-indexの値をh1のz-indexの値よりも小さくして背景に回す*/
+  height: 100%;
+  /*スライダー全体の縦幅を画面の高さいっぱい（100vh）にする*/
+}
+
+/*　背景画像設定　*/
+
+.slider-item01 {
+  background: url('../images/top.jpg');
+}
+
+.slider-item02 {
+  background: url('../images/bird.jpg');
+}
+
+.slider-item03 {
+  background: url('../images/cat.jpg');
+}
+
+
+
+
+
+.slider-item {
+  width: 100%;
+  /*各スライダー全体の横幅を画面の高さいっぱい（100%）にする*/
+  height: 55vh;
+  /*各スライダー全体の縦幅を画面の高さいっぱい（100vh）にする*/
+  background-repeat: no-repeat;
+  /*背景画像をリピートしない*/
+  background-position: center;
+  /*背景画像の位置を中央に*/
+  background-size: cover;
+  /*背景画像が.slider-item全体を覆い表示*/
+}
+
+/*矢印の設定*/
+
+.slick-prev,
+.slick-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  /* 背景を半透明に設定 */
+  color: rgba(255, 255, 255, 0.5);
+  /* テキストカラーを半透明に設定 */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background: rgba(0, 0, 0, 0.8);
+  /* ホバー時に少し濃くする */
+  color: rgba(255, 255, 255, 0.8);
+  /* ホバー時に少し濃くする */
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+/* ドットナビゲーションの設定 */
+.slick-dots {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  z-index: 1;
+}
+
+.slick-dots li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.slick-dots button {
+  background: rgba(255, 255, 255, 0.5);
+  /* ドットボタンを半透明に設定 */
+  border: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+}
+
+.slick-dots .slick-active button {
+  background: rgba(255, 255, 255, 0.8);
+  /* 現在地のドットボタンを少し濃くする */
+}
+
+
+/*ドットナビゲーションの設定*/
+
+.slick-dots {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  margin: -20px 0 0 0;
+  /*ドットの位置*/
+}
+
+.slick-dots li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.slick-dots button {
+  color: transparent;
+  outline: none;
+  width: 8px;
+  /*ドットボタンのサイズ*/
+  height: 8px;
+  /*ドットボタンのサイズ*/
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  /*ドットボタンの色*/
+}
+
+.slick-dots .slick-active button {
+  background: #858585;
+  /*ドットボタンの現在地表示の色*/
+}
+
+.order-history-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.order-history-item {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.order-history-item h2 {
+  margin-top: 0;
+}
+
+.order-history-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.order-history-book-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.order-history-book-thumbnail {
+  width: 80px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.order-history-book-info {
+  flex-grow: 1;
+}
+
+.order-history-item p.total-price {
+  font-weight: bold;
+  text-align: right;
+  margin-top: 10px;
+}
+
+
+.cart-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cart-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cart-book-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.cart-book-thumbnail {
+  width: 80px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.cart-book-info {
+  flex-grow: 1;
+}
+
+.total-price {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Site Title Overlay */
+.site-title-overlay {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 10;
+  /* スライダーの上に表示する */
+}
+
+.site-title-overlay h1 {
+  margin: 0;
+  font-size: 5em;
+  font-family: 'Playfair Display', serif;
+  /* フォントをPlayfair Displayに変更 */
+  opacity: 0.75;
+}
