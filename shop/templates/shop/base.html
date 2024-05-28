@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>技術同人誌ECサイト</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        #word-cloud {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background-color: #ffffff; /* 背景色を白に設定 */
+        }
+    </style>
+    {% load django_bootstrap5 %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'shop:home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shop:cart_detail' %}">カート</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shop:order_history' %}">注文履歴</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shop:profile' %}">プロフィール</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}" id="logout-link" data-toggle="modal" data-target="#logoutModal">ログアウト</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">ログイン</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">ユーザー登録</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'shop:book_list' %}">同人誌一覧</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'shop:add_book' %}">同人誌を追加</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">ログアウト確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    本当にログアウトしますか？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                    <a id="confirm-logout" class="btn btn-primary" href="{% url 'account_logout' %}">ログアウト</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+    <div class="slider">
+        <div class="slider-item slider-item01"></div>
+        <div class="slider-item slider-item02"></div>
+        <div class="slider-item slider-item03"></div>
+    </div>
+    {% endblock %}
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            // スリックスライダーの初期化
+            $('.slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+            });
+
+            // ログアウトリンクのクリックイベント
+            $('#logout-link').on('click', function(e) {
+                e.preventDefault();
+                $('#logoutModal').modal('show');
+            });
+
+            // ログアウト確認ボタンのリンクを設定
+            $('#logoutModal').on('show.bs.modal', function(e) {
+                var logoutUrl = $('#logout-link').attr('href');
+                $('#confirm-logout').attr('href', logoutUrl);
+            });
+
+            // タグクラウドのデータを取得
+            var tags = [
+                {% for tag in tags %}
+                    ["{{ tag.name }}", {{ tag.size }}],
+                {% endfor %}
+            ];
+
+            // タグクラウドの表示
+            WordCloud(document.getElementById('word-cloud'), {
+                list: tags,
+                gridSize: Math.round(16 * $('#word-cloud').width() / 1024),
+                weightFactor: function (size) {
+                    return size * 2;
+                },
+                fontFamily: 'Times, serif',
+                color: function (word, weight) {
+                    
+                    var colors = ['#FF6670', '#53B09A', '#FF9F40', '#87B6A7', '#5B5941'];
+                    return colors[Math.floor(Math.random() * colors.length)];
+                },
+                rotateRatio: 0.5,
+                rotationSteps: 2,
+                backgroundColor: '#ffffff',
+                drawOutOfBound: false,
+                click: function(item) {
+                    window.location.href = "{% url 'shop:book_list' %}?tag=" + item[0];
+                }
+            });
+        });
+    </script>
+</body>
+</html>
