@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="order-history-wrapper">
+    <h1>注文履歴</h1>
+    {% for summary in order_summaries %}
+        <div class="order-history-item">
+            <h2>注文番号: {{ summary.order.id }}</h2>
+            <p>注文日: {{ summary.order.created_at }}</p>
+            <div class="order-history-details">
+                {% for book in summary.order.books.all %}
+                    <div class="order-history-book-item">
+                        <img src="{{ book.preview.url }}" alt="{{ book.title }} preview" class="order-history-book-thumbnail">
+                        <div class="order-history-book-info">
+                            <p>{{ book.title }}</p>
+                            <p>{{ book.price }} 円</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                <p class="total-price">合計金額: {{ summary.total_price }} 円</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

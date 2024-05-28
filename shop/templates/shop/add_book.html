@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h2>技術同人誌の登録</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-item">
+            {{ form.as_p }}
+        </div>
+        <div class="button-panel">
+            <button type="submit" class="button">登録</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h2>プロフィール管理</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-item">
+            {{ form.as_p }}
+        </div>
+        <div class="button-panel">
+            <button type="submit" class="button">保存</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
