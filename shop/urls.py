@@ -1,7 +1,7 @@
-from django.urls import path,include
+from django.urls import path, include
 from . import views
 
-app_name = 'shop' 
+app_name = 'shop'
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('order_history/', views.order_history, name='order_history'),
     path('profile/', views.profile, name='profile'),
     path('accounts/', include('allauth.urls')),
+    path('signup/', views.custom_signup, name='custom_signup'),
 ]

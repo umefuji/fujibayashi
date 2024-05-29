@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Cart, Order
+from .models import Book, Cart, Order, Author
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseForbidden
-from .forms import UserProfileForm, BookForm
+from .forms import UserProfileForm, BookForm, CustomSignupForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.http import require_POST
@@ -136,3 +136,16 @@ def remove_from_cart(request, book_id):
     cart = get_object_or_404(Cart, user=request.user)
     cart.books.remove(book)
     return redirect('shop:cart_detail')
+
+def custom_signup(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save(request)
+            if form.cleaned_data.get('is_author'):
+                if not Author.objects.filter(user=user).exists():
+                    Author.objects.create(user=user)
+            return redirect('shop:home')
+    else:
+        form = CustomSignupForm()
+    return render(request, 'account/signup.html', {'form': form})

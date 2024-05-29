@@ -13,14 +13,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        #word-cloud {
-            width: 100%;
-            height: 400px;
-            position: relative;
-            background-color: #ffffff; /* 背景色を白に設定 */
-        }
-    </style>
+
     {% load django_bootstrap5 %}
 </head>
 <body>
@@ -43,7 +36,9 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">ユーザー登録</a></li>
                 {% endif %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'shop:book_list' %}">同人誌一覧</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'shop:add_book' %}">同人誌を追加</a></li>
+                {% if request.user.is_authenticated and request.user.author %}
+                    <li class="nav-item"><a class="nav-link" a href="{% url 'shop:add_book' %}">同人誌を追加</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -69,6 +64,26 @@
         </div>
     </div>
 
+    <!-- Add to Cart Confirmation Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">通知</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    カートに追加しました。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% block content %}
     <div class="slider">
         <div class="slider-item slider-item01"></div>
@@ -77,13 +92,13 @@
     </div>
     {% endblock %}
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('.select2').select2();
@@ -119,26 +134,56 @@
             ];
 
             // タグクラウドの表示
-            WordCloud(document.getElementById('word-cloud'), {
-                list: tags,
-                gridSize: Math.round(16 * $('#word-cloud').width() / 1024),
-                weightFactor: function (size) {
-                    return size * 2;
-                },
-                fontFamily: 'Times, serif',
-                color: function (word, weight) {
-                    
-                    var colors = ['#FF6670', '#53B09A', '#FF9F40', '#87B6A7', '#5B5941'];
-                    return colors[Math.floor(Math.random() * colors.length)];
-                },
-                rotateRatio: 0.5,
-                rotationSteps: 2,
-                backgroundColor: '#ffffff',
-                drawOutOfBound: false,
-                click: function(item) {
-                    window.location.href = "{% url 'shop:book_list' %}?tag=" + item[0];
-                }
+            if (tags.length > 0) {
+                WordCloud(document.getElementById('word-cloud'), {
+                    list: tags,
+                    gridSize: Math.round(16 * $('#word-cloud').width() / 1024),
+                    weightFactor: function (size) {
+                        return size * 2;
+                    },
+                    fontFamily: 'Times, serif',
+                    color: function (word, weight) {
+                        var colors = ['#FF6670', '#53B09A', '#FF9F40', '#87B6A7', '#5B5941'];
+                        return colors[Math.floor(Math.random() * colors.length)];
+                    },
+                    rotateRatio: 0.5,
+                    rotationSteps: 2,
+                    backgroundColor: '#ffffff',
+                    drawOutOfBound: false,
+                    click: function(item) {
+                        window.location.href = "{% url 'shop:book_list' %}?tag=" + item[0];
+                    }
+                });
+            } else {
+                console.warn("タグクラウドのデータがありません。");
+            }
+
+            // カートに追加ボタンのクリックイベント
+            $('.add-to-cart').on('click', function(e) {
+                e.preventDefault();
+                
+                var bookId = $(this).data('id');
+                var url = $(this).closest('form').attr('action');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        'csrfmiddlewaretoken': csrfToken,
+                        'book_id': bookId
+                    },
+                    success: function(response) {
+                        if (response.message === 'カートに追加されました') {
+                            $('#cartModal').modal('show');
+                        }
+                    },
+                    error: function(response) {
+                        alert('カートに追加できませんでした。');
+                    }
+                });
             });
+
         });
     </script>
 </body>
